@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mediasol.loadtransactions.config.AccountStatus;
 import com.mediasol.loadtransactions.entity.HlavickaVypisu;
 import com.mediasol.loadtransactions.gpc.Process.GPCProcessor;
 import com.mediasol.loadtransactions.output.OutputHlavickaATransakceToMongoDB;
@@ -32,6 +33,7 @@ public class GPCFileIO {
 	OutputHlavickaATransakceToStdout gpcOutputHlavickaATransakce;	
 	@Autowired	
 	OutputHlavickaATransakceToMongoDB outputHlavickaATransakceToMongoDB;
+	
 
 	static final String GPC_EXTENSION = "gpc";
 
@@ -91,7 +93,8 @@ public class GPCFileIO {
 		} finally {
 			gpcOutputHlavickaATransakce.PrintHlavickaATransakce(hlavickaVypisu);
 			outputHlavickaATransakceToMongoDB.writeHlavickaATransakce(hlavickaVypisu);
-			GPCProcessor.firstAccount = true;
+			//GPCProcessor.firstAccount = true;
+			AccountStatus.getInstance().firstAccount = true;
 			OutputHlavickaATransakceToStdout.countOfAccounts = 0;
 		}
 	}

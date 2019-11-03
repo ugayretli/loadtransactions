@@ -2,6 +2,8 @@ package com.mediasol.loadtransactions.gpc.Process;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.mediasol.loadtransactions.config.AccountStatus;
 import com.mediasol.loadtransactions.config.GPCProperties;
 import com.mediasol.loadtransactions.entity.*;
 import com.mediasol.loadtransactions.output.OutputHlavickaATransakceToMongoDB;
@@ -10,7 +12,7 @@ import com.mediasol.loadtransactions.output.OutputHlavickaATransakceToStdout;
 @Component
 public class GPCProcessor {
 
-	public static boolean firstAccount = true;
+	//public static boolean firstAccount = true;
 
 	
 	
@@ -44,7 +46,7 @@ public class GPCProcessor {
 		
 		if (typZaznamu.equals(GPCProperties.HLAVICKA_VYPISU)) {
 					
-			if ( !firstAccount )
+			if ( !AccountStatus.getInstance().firstAccount )
 			{
 				gpcOutputHlavickaATransakce.PrintHlavickaATransakce(hlavickaVypisu);
 				outputHlavickaATransakceToMongoDB.writeHlavickaATransakce(hlavickaVypisu);
@@ -59,7 +61,7 @@ public class GPCProcessor {
 
 		} else if (typZaznamu.equals(GPCProperties.DETAIL_TRANSAKCE)) {
 			
-			firstAccount = false;
+			AccountStatus.getInstance().firstAccount = false;
 			transakce = new Transakce();
 			hlavickaVypisu.addentrytoTransakcelistHlavickaVypisu(transakce);
 			
