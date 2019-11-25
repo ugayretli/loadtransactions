@@ -2,7 +2,6 @@ package com.mediasol.loadtransactions.gpc.Process;
 
 import java.text.ParseException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mediasol.loadtransactions.config.GPCProperties;
@@ -11,12 +10,12 @@ import com.mediasol.loadtransactions.entity.HlavickaVypisu;
 @Component
 public class GPCParserHlavicka {
 
-@Autowired
-HlavickaVypisu hlavickaVypisu;
+
 
 	public HlavickaVypisu setterHlavicka(String lineHlavicka)
 	{
 		int poziceLine = 0;
+		HlavickaVypisu hlavickaVypisu = HlavickaVypisu.getInstance();
 		
 		try
 		{

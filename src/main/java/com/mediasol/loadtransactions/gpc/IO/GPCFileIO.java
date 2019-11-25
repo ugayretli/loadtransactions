@@ -26,9 +26,6 @@ public class GPCFileIO {
 	GPCProcessor gpcProcessor;
 
 	@Autowired
-	HlavickaVypisu hlavickaVypisu;
-
-	@Autowired
 	OutputHlavickaATransakceToStdout gpcOutputHlavickaATransakce;	
 	@Autowired	
 	OutputHlavickaATransakceToMongoDB outputHlavickaATransakceToMongoDB;
@@ -77,7 +74,7 @@ public class GPCFileIO {
 			String l;
 			while ((l = br.readLine()) != null) {
 				// System.out.println("line:" + l);
-				if (gpcProcessor.parseGPCTransaction(l, hlavickaVypisu) == false) {
+				if (gpcProcessor.parseGPCTransaction(l, HlavickaVypisu.getInstance()) == false) {
 					System.out.println("Can not parse GPCTransaction!! Line content: " + l);
 				}
 
@@ -89,8 +86,8 @@ public class GPCFileIO {
 		} catch (IOException e) {
 			System.out.println("ERROR:Filename property does not exist: " + e.getMessage());
 		} finally {
-			gpcOutputHlavickaATransakce.PrintHlavickaATransakce(hlavickaVypisu);
-			outputHlavickaATransakceToMongoDB.writeHlavickaATransakce(hlavickaVypisu);
+			gpcOutputHlavickaATransakce.PrintHlavickaATransakce(HlavickaVypisu.getInstance());
+			outputHlavickaATransakceToMongoDB.writeHlavickaATransakce(HlavickaVypisu.getInstance());
 			GPCProcessor.firstAccount = true;
 			OutputHlavickaATransakceToStdout.countOfAccounts = 0;
 		}

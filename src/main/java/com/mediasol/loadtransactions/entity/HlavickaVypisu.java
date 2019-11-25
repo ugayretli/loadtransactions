@@ -9,8 +9,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HlavickaVypisu {
+public final class HlavickaVypisu {
 	
+	private static final HlavickaVypisu INSTANCE = new HlavickaVypisu();
 	String cisloUctu;
 	String majitelUctu;
 	LocalDateTime datumPocatecnihoZuztatku;
@@ -24,12 +25,15 @@ public class HlavickaVypisu {
 	LocalDateTime datumVypisu;
 	List<Transakce> transakce;
 
-	
-	public HlavickaVypisu() {
-		super();
-		this.transakce = new ArrayList<Transakce>();
-	}
-	
+private HlavickaVypisu() {
+	super();
+	this.transakce = new ArrayList<Transakce>();
+}
+
+public static HlavickaVypisu getInstance() {
+    return INSTANCE;
+}
+
 	
 	
 	
