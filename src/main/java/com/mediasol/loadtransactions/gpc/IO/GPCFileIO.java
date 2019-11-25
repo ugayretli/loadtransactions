@@ -1,7 +1,7 @@
+
 package com.mediasol.loadtransactions.gpc.IO;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.mediasol.loadtransactions.config.AccountStatus;
 import com.mediasol.loadtransactions.entity.HlavickaVypisu;
 import com.mediasol.loadtransactions.gpc.Process.GPCProcessor;
 import com.mediasol.loadtransactions.output.OutputHlavickaATransakceToMongoDB;
@@ -23,12 +24,13 @@ import com.mediasol.loadtransactions.output.OutputHlavickaATransakceToStdout;
 public class GPCFileIO {
 
 	@Autowired
-	GPCProcessor gpcProcessor;
+	private GPCProcessor gpcProcessor;
 
 	@Autowired
-	OutputHlavickaATransakceToStdout gpcOutputHlavickaATransakce;	
+	private OutputHlavickaATransakceToStdout gpcOutputHlavickaATransakce;	
 	@Autowired	
-	OutputHlavickaATransakceToMongoDB outputHlavickaATransakceToMongoDB;
+	private OutputHlavickaATransakceToMongoDB outputHlavickaATransakceToMongoDB;
+	
 
 	static final String GPC_EXTENSION = "gpc";
 
@@ -79,16 +81,13 @@ public class GPCFileIO {
 				}
 
 			}
-		} catch (NullPointerException e) {
-			System.out.println("ERROR:Filename property does not exist: " + e.getMessage());
-		} catch (FileNotFoundException e) {
-			System.out.println("ERROR:Filename property does not exist: " + e.getMessage());
-		} catch (IOException e) {
+		} catch (NullPointerException|IOException e) {
 			System.out.println("ERROR:Filename property does not exist: " + e.getMessage());
 		} finally {
 			gpcOutputHlavickaATransakce.PrintHlavickaATransakce(HlavickaVypisu.getInstance());
 			outputHlavickaATransakceToMongoDB.writeHlavickaATransakce(HlavickaVypisu.getInstance());
-			GPCProcessor.firstAccount = true;
+			//GPCProcessor.firstAccount = true;
+			AccountStatus.getInstance().firstAccount = true;
 			OutputHlavickaATransakceToStdout.countOfAccounts = 0;
 		}
 	}
